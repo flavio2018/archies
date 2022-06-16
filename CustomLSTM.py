@@ -11,7 +11,8 @@ class CustomLSTM(torch.nn.Module):
         self.register_buffer("hidden_states", torch.zeros(1, hidden_size))
         self.register_buffer("cell_states", torch.zeros(1, hidden_size))
         self.hidden_size = hidden_size
-
+        self.log_softmax = torch.nn.LogSoftmax(dim=1)
+    
     def forward(self, batch):
         batch_size, sequence_len, feature_size = batch.shape
         all_outputs = []
@@ -21,7 +22,7 @@ class CustomLSTM(torch.nn.Module):
         for seq_pos in range(sequence_len):
             self.hidden_states, self.cell_states = self.lstm(batch[:, seq_pos, :].reshape(batch_size, feature_size),
                                                              (self.hidden_states, self.cell_states))
-            o_n = torch.nn.functional.log_softmax(self.linear(self.hidden_states), dim=0)
+            o_n = self.log_softmax(self.linear(self.hidden_states))
             all_hidden_states.append(self.hidden_states)
             all_cell_states.append(self.cell_states)
             all_outputs.append(o_n.T)
