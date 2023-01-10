@@ -1,5 +1,5 @@
 import torch
-from LSTM import DeepLSTM2
+from .LSTM import DeepLSTM2
 
 
 class GatingNetwork(torch.nn.Module):
