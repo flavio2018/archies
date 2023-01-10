@@ -91,10 +91,10 @@ class RecurrentMoE(torch.nn.Module):
 
 class EncoderDecoderRecurrentMoE(torch.nn.Module):
     
-    def __init__(self, input_size, hidden_size, output_size, num_experts, topk, batch_size):
+    def __init__(self, enc_input_size, dec_input_size, hidden_size, output_size, num_experts, topk, batch_size):
         super(EncoderDecoderRecurrentMoE, self).__init__()
-        self.encoder = RecurrentMoE(input_size, hidden_size, output_size, num_experts, topk, batch_size)
-        self.decoder = RecurrentMoE(input_size, hidden_size, output_size, num_experts, topk, batch_size)
+        self.encoder = RecurrentMoE(enc_input_size, hidden_size, output_size, num_experts, topk, batch_size)
+        self.decoder = RecurrentMoE(dec_input_size, hidden_size, output_size, num_experts, topk, batch_size)
     
     def forward(self, x, y, lengths):
         enc_out = self.encoder(x, lengths)
